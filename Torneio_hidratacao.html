@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Torneio sob o sol</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap">
+<style>
+:root{--bg:#eaf6fb;--card:#fff;--ink:#0f2a43;--mute:#4a6275;--line:#cfe3ee;--aqua:#0e9fb4;--sun:#ffc933;--good:#117a4f;--goodbg:#dff5ea;--mid:#8a5a00;--midbg:#fff1cf;--bad:#b3261e;--badbg:#fde4e2;--btn:#0f2a43;--btnink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0b1c2c;--card:#12304a;--ink:#eef6fb;--mute:#a9c0d1;--line:#25506f;--aqua:#4fd1e3;--good:#7be0ae;--goodbg:#12402e;--mid:#ffd77a;--midbg:#4a3a10;--bad:#ff9d96;--badbg:#4a1c1a;--btn:#ffc933;--btnink:#0f2a43}}
+:root[data-theme="dark"]{--bg:#0b1c2c;--card:#12304a;--ink:#eef6fb;--mute:#a9c0d1;--line:#25506f;--aqua:#4fd1e3;--good:#7be0ae;--goodbg:#12402e;--mid:#ffd77a;--midbg:#4a3a10;--bad:#ff9d96;--badbg:#4a1c1a;--btn:#ffc933;--btnink:#0f2a43}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;padding:16px}
+main{max-width:680px;margin:0 auto}
+h1,h2{font-family:Fredoka,"Trebuchet MS",system-ui,sans-serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:2.1rem}h2{font-size:1.5rem}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.temp{display:flex;align-items:center;gap:8px;background:var(--sun);color:#0f2a43;border-radius:999px;padding:6px 14px 6px 8px;font:700 1rem Fredoka,system-ui,sans-serif}
+.therm{width:14px;height:30px;border-radius:7px 7px 7px 7px;background:#fff;position:relative;border:3px solid #0f2a43}
+.therm::after{content:"";position:absolute;left:1px;right:1px;bottom:1px;height:70%;background:#e0352b;border-radius:4px}
+.steps{display:flex;gap:6px;flex:1}
+.steps i{flex:1;height:10px;border-radius:5px;background:var(--line)}
+.steps i.on{background:var(--aqua)}
+.score{font:700 1rem Fredoka,system-ui,sans-serif;white-space:nowrap}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:22px}
+.when{color:var(--mute);font-weight:600;margin:0 0 6px}
+.opts{display:grid;gap:10px;margin-top:16px}
+button{font:inherit;cursor:pointer}
+.opt{text-align:left;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:14px 16px}
+.opt:hover,.opt:focus-visible{border-color:var(--aqua)}
+.opt b{display:inline-block;min-width:1.6em;color:var(--aqua)}
+.go{background:var(--btn);color:var(--btnink);border:0;border-radius:12px;padding:12px 20px;font-weight:700;margin-top:14px}
+.go.alt{background:transparent;color:var(--ink);border:2px solid var(--line);margin-left:8px}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--aqua);outline-offset:2px}
+.fb{border-radius:12px;padding:14px 16px;margin-top:16px}
+.fb.p2{background:var(--goodbg);color:var(--good)}
+.fb.p1{background:var(--midbg);color:var(--mid)}
+.fb.p0{background:var(--badbg);color:var(--bad)}
+.fb strong{display:block;margin-bottom:2px}
+.fb p{margin:0;color:var(--ink)}
+.note{font-size:.92rem;color:var(--mute);margin-top:10px}
+textarea{width:100%;min-height:120px;border:2px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);color:var(--ink);font:inherit;margin-top:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{border-radius:999px;padding:3px 12px;font-size:.9rem;background:var(--line);color:var(--mute)}
+.chip.ok{background:var(--goodbg);color:var(--good);font-weight:700}
+.big{font:700 3rem Fredoka,system-ui,sans-serif;color:var(--aqua);line-height:1}
+@media (prefers-reduced-motion:no-preference){.card{animation:in .25s ease-out}@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+var S=[
+{t:"Antes do torneio",w:"São 13h30. O primeiro jogo é daqui a 1 hora e meia. A Rita ainda não bebeu quase nada desde o pequeno-almoço. O que deve fazer?",o:[
+["Beber água aos poucos ao longo da manhã e 1 a 2 copos agora.",2,"Excelente!","Hidratar-se antes do esforço prepara o corpo para o calor e para o suor que vai perder."],
+["Esperar até ter sede para beber.",0,"Cuidado!","Quando sentes sede, o corpo já começou a perder água. A Rita começa o jogo com desvantagem."],
+["Beber uma bebida energética açucarada de uma só vez.",1,"Quase.","Hidratou-se um pouco, mas as bebidas açucaradas não são necessárias e beber tudo de uma vez pode causar mal-estar. Para a maioria dos esforços escolares, a água é a melhor escolha."]]},
+{t:"Durante o torneio",w:"O primeiro jogo terminou. Há um intervalo de 15 minutos e o calor continua forte. A Rita está a suar bastante. O que deve fazer?",o:[
+["Beber pequenos goles de água a cada 15 a 20 minutos, incluindo nos tempos mortos do jogo.",2,"Muito bem!","O suor faz perder água e sais minerais. Repor aos poucos mantém a temperatura controlada e adia a fadiga."],
+["Não beber, para não se sentir pesada, e só beber no fim do torneio.",0,"Má escolha!","Sem água, o sangue fica mais “espesso”, o coração trabalha mais e a Rita cansa-se mais depressa."],
+["Beber meio litro de uma vez no intervalo.",1,"Quase.","Repor água é bom, mas beber muito de uma só vez pode causar desconforto no estômago. Funciona melhor em pequenos goles regulares."]]},
+{t:"Sinal de alerta",w:"No segundo jogo, a colega Marta começa a ter tonturas, dor de cabeça e uma cãibra na perna. Está muito vermelha e cansada. A Rita está ao lado dela. O que deve fazer?",o:[
+["Dizer à Marta que pare, avisar o professor, ir para a sombra e beber água aos poucos.",2,"Perfeito!","Tonturas, dor de cabeça e cãibras são sinais de alerta. Parar, descansar à sombra e avisar um adulto é o mais seguro.",
+"Se houver confusão, ausência de suor ou perda de consciência, chama de imediato um adulto e o 112."],
+["Dizer-lhe para continuar a jogar, para não prejudicar a equipa.",0,"Perigoso!","Insistir no esforço com estes sinais pode levar a um golpe de calor. A saúde vem antes do resultado."],
+["Dar-lhe muita água depressa e voltar logo ao jogo.",1,"Quase.","Beber ajuda, mas a Marta precisa de parar e descansar primeiro. Voltar de imediato ao esforço é arriscado."]]},
+{t:"Depois do torneio",w:"O torneio acabou. A Rita está cansada e com muita sede. O que deve fazer?",o:[
+["Beber água aos poucos nas horas seguintes e comer um lanche.",2,"Excelente!","Repor aos poucos ajuda o corpo a recuperar mais depressa para o treino seguinte."],
+["Não beber nada até à noite.",0,"Má escolha!","Sem repor a água perdida, a recuperação é mais lenta e a Rita pode ter dores de cabeça e cansaço."],
+["Beber um refrigerante gelado.",1,"Quase.","Bebeu líquido, mas o refrigerante tem muito açúcar e não é a melhor forma de repor a água. A água é a melhor escolha."]]}
+];
+var KW=["água","goles","calor","suor","sais minerais","antes","durante","depois"];
+var app=document.getElementById("app"),st,L="ABC";
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function init(){st={i:-1,pts:[null,null,null,null],pick:null};draw()}
+function bar(){var h='<div class="top"><div class="temp"><span class="therm"></span>32 °C</div><div class="steps">';
+for(var k=0;k<4;k++)h+='<i class="'+(k<=st.i?"on":"")+'"></i>';
+var tot=st.pts.reduce(function(a,b){return a+(b||0)},0);
+return h+'</div><div class="score">'+tot+' pts</div></div>'}
+function draw(){
+if(st.i<0){app.innerHTML='<div class="card"><h1>Torneio sob o sol</h1><p>A Rita tem 12 anos e vai participar no torneio de andebol da escola. Hoje estão <b>32 °C</b> e os jogos são às <b>15h</b>, no campo exterior.</p><p>Vais acompanhá-la em quatro momentos importantes. As tuas decisões vão influenciar o desempenho e a saúde dela.</p><button class="go" id="start">Começar</button></div>';
+document.getElementById("start").onclick=function(){st.i=0;draw()};return}
+if(st.i>3){end();return}
+var s=S[st.i],h=bar()+'<div class="card"><p class="when">Momento '+(st.i+1)+' de 4 · '+s.t+'</p><h2>'+esc(s.w)+'</h2>';
+if(st.pick===null){h+='<div class="opts">';s.o.forEach(function(o,k){h+='<button class="opt" data-k="'+k+'"><b>'+L[k]+'</b>'+esc(o[0])+'</button>'});h+='</div>'}
+else{var o=s.o[st.pick];h+='<p class="when">A tua escolha: '+esc(o[0])+'</p><div class="fb p'+o[1]+'"><strong>'+o[2]+' ('+o[1]+(o[1]==1?' ponto':' pontos')+')</strong><p>'+esc(o[3])+'</p>'+(o[4]?'<p class="note">'+esc(o[4])+'</p>':'')+'</div>';
+h+='<button class="go" id="next">'+(st.i<3?'Continuar':'Ver resultado')+'</button>';
+if(o[1]<2)h+='<button class="go alt" id="retry">Tentar outra vez</button>'}
+app.innerHTML=h+'</div>';
+Array.prototype.forEach.call(app.querySelectorAll(".opt"),function(b){b.onclick=function(){var k=+b.dataset.k;st.pick=k;if(st.pts[st.i]===null)st.pts[st.i]=s.o[k][1];draw()}});
+var n=document.getElementById("next");if(n)n.onclick=function(){st.i++;st.pick=null;draw()};
+var r=document.getElementById("retry");if(r)r.onclick=function(){st.pick=null;draw()}}
+function end(){
+var t=st.pts.reduce(function(a,b){return a+b},0),m=t>=7?"Excelente! Percebeste bem como a hidratação protege o corpo e melhora o desempenho. Estás pronto para aplicar isto em qualquer situação.":t>=4?"Bom trabalho! Já sabes muita coisa, mas ainda há decisões a melhorar. Revê o que correu menos bem e tenta outra vez.":"Ainda tens de rever alguns conceitos. Volta ao início e tenta de novo. Podes fazer melhor!";
+app.innerHTML=bar()+'<div class="card"><h1>Torneio concluído!</h1><p class="big">'+t+' / 8</p><p>'+m+'</p><p class="note">A pontuação conta a tua primeira escolha em cada momento.</p></div><div class="card" style="margin-top:14px"><h2>Agora é a tua vez</h2><p>Imagina um treino de ciclismo no verão. O que mudarias no teu plano de hidratação antes, durante e depois? Justifica.</p><textarea id="ans" aria-label="A tua resposta"></textarea><button class="go" id="chk">Verificar resposta</button><div id="res"></div></div><button class="go alt" id="again" style="margin:14px 0 0">Jogar outra vez</button>';
+document.getElementById("again").onclick=init;
+document.getElementById("chk").onclick=function(){var v=document.getElementById("ans").value.toLowerCase(),c=0,h='<div class="chips">';
+KW.forEach(function(k){var ok=v.indexOf(k)>-1;if(ok)c++;h+='<span class="chip'+(ok?' ok':'')+'">'+k+'</span>'});
+h+='</div><p class="note">Usaste '+c+' de '+KW.length+' palavras-chave. As que ficaram a cinzento são ideias que podes acrescentar.</p><div class="fb p2"><strong>Resposta-modelo</strong><p>Antes, bebia água ao longo do dia e 1 a 2 copos 1 a 2 horas antes de sair. Durante, bebia pequenos goles de água a cada 15 a 20 minutos, porque com calor o suor faz perder água e sais minerais. Depois, repunha a água aos poucos e comia um lanche.</p></div>';
+document.getElementById("res").innerHTML=h}}
+init();
+</script>
+</body>
+</html>
